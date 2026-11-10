@@ -1,0 +1,46 @@
+# Standard Unity .gitignore (github/gitignore Unity template)
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Unity — generated folders (НЕ коммитить!)
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]serSettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity crash reports / addons
+sysinfo.txt
+*.apk
+*.unitypackage
+*.app
+crashlytics-build.properties
+
+# Addressables / Burst / other generated
+[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+[Aa]ssets/[Ss]treamingAssets/aa.meta
+[Aa]ssets/[Ss]treamingAssets/aa/*
