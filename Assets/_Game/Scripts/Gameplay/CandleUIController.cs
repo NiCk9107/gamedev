@@ -24,15 +24,15 @@ public sealed class CandleUIController : MonoBehaviour
 
     private void Awake()
     {
-        startPanel        ??= FindChild("StartPanel");
-        hudPanel          ??= FindChild("HUD");
-        flameLabel        ??= FindChild<TMP_Text>("FlameLabel");
-        winPanel          ??= FindChild("WinPanel");
-        losePanel         ??= FindChild("LosePanel");
-        flameSlider       ??= GetComponentInChildren<Slider>(true);
-        playButton        ??= FindChild<Button>("PlayButton");
-        winRestartButton  ??= FindChild<Button>("WinRestartButton");
-        loseRestartButton ??= FindChild<Button>("LoseRestartButton");
+        if (startPanel == null) startPanel = FindChild("StartPanel");
+        if (hudPanel == null) hudPanel = FindChild("HUD");
+        if (flameLabel == null) flameLabel = FindChild<TMP_Text>("FlameLabel");
+        if (winPanel == null) winPanel = FindChild("WinPanel");
+        if (losePanel == null) losePanel = FindChild("LosePanel");
+        if (flameSlider == null) flameSlider = GetComponentInChildren<Slider>(true);
+        if (playButton == null) playButton = FindChild<Button>("PlayButton");
+        if (winRestartButton == null) winRestartButton = FindChild<Button>("WinRestartButton");
+        if (loseRestartButton == null) loseRestartButton = FindChild<Button>("LoseRestartButton");
     }
 
     private void Start()
@@ -95,3 +95,4 @@ public sealed class CandleUIController : MonoBehaviour
         return t != null ? t.GetComponent<T>() : null;
     }
 }
+
