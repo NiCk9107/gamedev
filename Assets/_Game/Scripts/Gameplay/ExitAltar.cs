@@ -1,17 +1,22 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Алтарь выхода: победа, если вошёл игрок с живым пламенем (Value > 0).
-/// Вешается на ExitAltar (нужен Collider2D с Is Trigger).
-/// </summary>
-public sealed class ExitAltar : MonoBehaviour
+public class ExitAltar : MonoBehaviour
 {
+    [Tooltip("Если пусто — алтарь даёт победу. Если указано имя сцены — грузит её.")]
+    [SerializeField] private string nextSceneName;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var flame = other.GetComponentInParent<CandleFlame>();
-        if (flame == null || flame.Value <= 0f) return;
-        if (GameManager.Instance == null) return;
+        if (GameManager.Instance == null ||
+            GameManager.Instance.State != GameState.Playing) return;
 
-        GameManager.Instance.Win();
+        CandleFlame flame = other.GetComponentInParent<CandleFlame>();
+        if (flame == null || flame.Value <= 0f) return;
+
+        if (!string.IsNullOrEmpty(nextSceneName))
+            SceneManager.LoadScene(nextSceneName);
+        else
+            GameManager.Instance.Win();
     }
 }
