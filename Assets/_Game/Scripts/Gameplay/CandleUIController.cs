@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// Контроллер UI «Последней свечи»: стартовое меню, HUD со шкалой пламени,
@@ -11,9 +12,11 @@ public sealed class CandleUIController : MonoBehaviour
 {
     [Header("Ссылки (если пусто — ищется по имени дочернего объекта)")]
     [SerializeField] private GameObject startPanel;
+    [SerializeField] private GameObject hudPanel;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
     [SerializeField] private Slider flameSlider;
+    [SerializeField] private TMP_Text flameLabel;
     [SerializeField] private Button playButton;
     [SerializeField] private Button winRestartButton;
     [SerializeField] private Button loseRestartButton;
@@ -22,6 +25,8 @@ public sealed class CandleUIController : MonoBehaviour
     private void Awake()
     {
         startPanel        ??= FindChild("StartPanel");
+        hudPanel          ??= FindChild("HUD");
+        flameLabel        ??= FindChild<TMP_Text>("FlameLabel");
         winPanel          ??= FindChild("WinPanel");
         losePanel         ??= FindChild("LosePanel");
         flameSlider       ??= GetComponentInChildren<Slider>(true);
@@ -53,6 +58,8 @@ public sealed class CandleUIController : MonoBehaviour
     {
         if (flameSlider != null && flame != null)
             flameSlider.value = flame.Normalized;
+        if (flameLabel != null && flame != null)
+            flameLabel.text = Mathf.CeilToInt(flame.Normalized * 100f) + "%";
     }
 
     private void OnDestroy()
@@ -64,19 +71,27 @@ public sealed class CandleUIController : MonoBehaviour
     private void OnStateChanged(GameState state)
     {
         if (startPanel != null) startPanel.SetActive(state == GameState.Ready);
+        if (hudPanel != null)   hudPanel.SetActive(state == GameState.Playing);
         if (winPanel != null)   winPanel.SetActive(state == GameState.Won);
         if (losePanel != null)  losePanel.SetActive(state == GameState.Lost);
     }
 
     private GameObject FindChild(string name)
     {
-        var t = transform.Find(name);
+        var t = FindDescendant(name);
         return t != null ? t.gameObject : null;
+    }
+
+    private Transform FindDescendant(string name)
+    {
+        foreach (var child in GetComponentsInChildren<Transform>(true))
+            if (child.name == name) return child;
+        return null;
     }
 
     private T FindChild<T>(string name) where T : Component
     {
-        var t = transform.Find(name);
+        var t = FindDescendant(name);
         return t != null ? t.GetComponent<T>() : null;
     }
 }

@@ -6,6 +6,7 @@ public sealed class CandleFlame : MonoBehaviour
 {
     [SerializeField, Min(1f)] private float maxFlame = 100f;
     [SerializeField, Min(0f)] private float lossPerSecond = 1f;
+    [SerializeField] private float extinguishBelowY = -15f;
 
     private float currentFlame;
 
@@ -25,11 +26,17 @@ public sealed class CandleFlame : MonoBehaviour
     {
         if (!IsFinite(maxFlame) || maxFlame < 1f) maxFlame = 100f;
         if (!IsFinite(lossPerSecond) || lossPerSecond < 0f) lossPerSecond = 1f;
+        if (!IsFinite(extinguishBelowY)) extinguishBelowY = -15f;
     }
 
     private void Update()
     {
         if (!IsPlaying()) return;
+        if (transform.position.y < extinguishBelowY)
+        {
+            Change(-maxFlame);
+            return;
+        }
         Change(-lossPerSecond * Time.deltaTime);
     }
 

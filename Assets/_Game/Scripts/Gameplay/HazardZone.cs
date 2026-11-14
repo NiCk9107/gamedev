@@ -1,19 +1,40 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Зона урона (ветер / тень): наносит урон один раз при входе игрока.
-/// Вешается на WindZone (damage = 20) и ShadowZone (damage = 35).
-/// Нужен Collider2D с Is Trigger.
-/// </summary>
+/// <summary>One hit per visit, even when the player has multiple colliders.</summary>
+[DisallowMultipleComponent]
 public sealed class HazardZone : MonoBehaviour
 {
     [SerializeField, Min(0f)] private float damage = 20f;
+    private readonly Dictionary<CandleFlame, HashSet<Collider2D>> occupants
+        = new Dictionary<CandleFlame, HashSet<Collider2D>>();
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var flame = other.GetComponentInParent<CandleFlame>();
-        if (flame == null) return;
+        if (GameManager.Instance == null || GameManager.Instance.State != GameState.Playing) return;
+        CandleFlame flame = other.GetComponentInParent<CandleFlame>();
+        if (flame == null || flame.Value <= 0f) return;
 
-        flame.Hurt(damage);
+        if (!occupants.TryGetValue(flame, out HashSet<Collider2D> colliders))
+        {
+            colliders = new HashSet<Collider2D>();
+            occupants.Add(flame, colliders);
+        }
+
+        // A collider can be disabled/destroyed without a useful exit callback.
+        colliders.RemoveWhere(collider => collider == null || !collider.enabled
+            || !collider.gameObject.activeInHierarchy);
+        bool firstContact = colliders.Count == 0;
+        if (colliders.Add(other) && firstContact) flame.Hurt(damage);
     }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        CandleFlame flame = other.GetComponentInParent<CandleFlame>();
+        if (flame == null || !occupants.TryGetValue(flame, out HashSet<Collider2D> colliders)) return;
+        colliders.Remove(other);
+        if (colliders.Count == 0) occupants.Remove(flame);
+    }
+
+    private void OnDisable() => occupants.Clear();
 }

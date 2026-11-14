@@ -73,6 +73,9 @@ public class GameSystemsTests : IPrebuildSetup, IPostBuildCleanup
         public List<bool> enabled = new List<bool>();
     }
 
+    [TearDown]
+    public void RestoreRuntimeClock() => Time.timeScale = 1f;
+
     [UnitySetUp]
     public IEnumerator LoadFreshRun()
     {

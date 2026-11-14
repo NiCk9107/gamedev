@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 918102280729899623}
   - component: {fileID: 8355924703309429678}
   - component: {fileID: 2052886969271466672}
+  - component: {fileID: 8355924703309429679}
   m_Layer: 0
   m_Name: ExitAltar
   m_TagString: Untagged
@@ -139,3 +140,15 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8355924703309429679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8236797427598192878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c9e8396b1d119348b500893f8c7fa1c, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ExitAltar

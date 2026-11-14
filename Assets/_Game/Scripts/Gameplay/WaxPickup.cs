@@ -1,19 +1,23 @@
 using UnityEngine;
 
-/// <summary>
-/// Капля воска: восстанавливает +25 пламени игроку и уничтожается.
-/// Вешается на префаб WaxDrop (нужен Collider2D с Is Trigger).
-/// Работает только во время Playing (проверка внутри CandleFlame.Restore).
-/// </summary>
+/// <summary>Collect once, and only during an active run.</summary>
+[DisallowMultipleComponent]
 public sealed class WaxPickup : MonoBehaviour
 {
     [SerializeField, Min(0f)] private float restoreAmount = 25f;
+    private bool collected;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var flame = other.GetComponentInParent<CandleFlame>();
-        if (flame == null) return;
+        if (collected || GameManager.Instance == null
+            || GameManager.Instance.State != GameState.Playing) return;
 
+        CandleFlame flame = other.GetComponentInParent<CandleFlame>();
+        if (flame == null || flame.Value <= 0f) return;
+
+        // Destroy is deferred until the end of the frame; additional player
+        // colliders must not collect the same drop again during that frame.
+        collected = true;
         flame.Restore(restoreAmount);
         Destroy(gameObject);
     }
