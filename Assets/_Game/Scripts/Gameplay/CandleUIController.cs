@@ -22,6 +22,10 @@ public sealed class CandleUIController : MonoBehaviour
     [SerializeField] private Button loseRestartButton;
     [SerializeField] private CandleFlame flame;
 
+    [Header("После победы")]
+    [Tooltip("Сцена, которая грузится по кнопке на экране победы. Game = начало игры.")]
+    [SerializeField] private string firstLevelScene = "Game";
+
     private void Awake()
     {
         if (startPanel == null) startPanel = FindChild("StartPanel");
@@ -49,7 +53,13 @@ public sealed class CandleUIController : MonoBehaviour
         if (playButton != null)
             playButton.onClick.AddListener(() => GameManager.Instance?.StartGame());
         if (winRestartButton != null)
-            winRestartButton.onClick.AddListener(() => GameManager.Instance?.Restart());
+            winRestartButton.onClick.AddListener(() =>
+            {
+                // После победы — в начало игры (с первого уровня),
+                // независимо от того, на каком уровне победили.
+                Time.timeScale = 1f;
+                UnityEngine.SceneManagement.SceneManager.LoadScene(firstLevelScene);
+            });
         if (loseRestartButton != null)
             loseRestartButton.onClick.AddListener(() => GameManager.Instance?.Restart());
     }
