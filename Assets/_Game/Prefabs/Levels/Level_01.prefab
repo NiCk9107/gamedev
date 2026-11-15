@@ -7193,6 +7193,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ExitAltar_23
       objectReference: {fileID: 0}
+    - target: {fileID: 8355924703309429679, guid: e4aa923e9698efb46980722df9845b94, type: 3}
+      propertyPath: nextSceneName
+      value: Trials
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

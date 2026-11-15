@@ -40,7 +40,7 @@ public sealed class CandleWorldArt:MonoBehaviour
         tileWidth=cam.orthographicSize*2.45f*bg.width/bg.height;
         backgrounds=new Transform[3];
         for(int i=0;i<3;i++)backgrounds[i]=Draw("DistantCrypt",backgroundSprite,Vector2.zero,new Vector2(tileWidth,cam.orthographicSize*2.45f),-100,new Color(.65f,.75f,.76f)).transform;
-        var level=GameObject.Find("Level_01");
+        var level=GameObject.Find("Level_01") ?? GameObject.Find("Level_02");
         if(level!=null)
         {
             foreach(var old in level.GetComponentsInChildren<SpriteRenderer>())
@@ -54,7 +54,8 @@ public sealed class CandleWorldArt:MonoBehaviour
                 for(int i=0;i<sections;i++)
                 {
                     float height=Mathf.Clamp(b.size.y,.65f,1.4f);
-                    Draw("CarvedStone",stone,new Vector2(b.min.x+width*(i+.5f),b.max.y-height/2),new Vector2(width+.015f,height),1,new Color(.78f,.85f,.81f));
+                    var tile = Draw("CarvedStone",stone,new Vector2(b.min.x+width*(i+.5f),b.max.y-height/2),new Vector2(width+.015f,height),1,new Color(.78f,.85f,.81f));
+                    if (old.TryGetComponent<TrialPlatform>(out _)) tile.transform.SetParent(old.transform, true);
                 }
             }
         }
