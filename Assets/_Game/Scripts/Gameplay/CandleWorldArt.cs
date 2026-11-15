@@ -40,7 +40,7 @@ public sealed class CandleWorldArt:MonoBehaviour
         tileWidth=cam.orthographicSize*2.45f*bg.width/bg.height;
         backgrounds=new Transform[3];
         for(int i=0;i<3;i++)backgrounds[i]=Draw("DistantCrypt",backgroundSprite,Vector2.zero,new Vector2(tileWidth,cam.orthographicSize*2.45f),-100,new Color(.65f,.75f,.76f)).transform;
-        var level=GameObject.Find("Level_01") ?? GameObject.Find("Level_02");
+        var level=GameObject.Find("Level_01") ?? GameObject.Find("Level_02") ?? GameObject.Find("Level_03");
         if(level!=null)
         {
             foreach(var old in level.GetComponentsInChildren<SpriteRenderer>())
