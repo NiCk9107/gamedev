@@ -15,6 +15,15 @@ public sealed class GameManager : MonoBehaviour
 
     private bool restartRequested;
 
+    /// <summary>
+    /// Переживает загрузку сцен: true после первого старта игры.
+    /// Первый запуск — со стартовым меню; переходы между уровнями — сразу в игру.
+    /// </summary>
+    private static bool runStarted;
+
+    /// <summary>Сбросить флаг прогона — вызывать перед возвратом в первую сцену после победы.</summary>
+    public static void ResetRun() => runStarted = false;
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetInstance() => Instance = null;
 
@@ -29,8 +38,17 @@ public sealed class GameManager : MonoBehaviour
         }
 
         Instance = this;
-        State = GameState.Ready;
-        Time.timeScale = 0f;
+        if (runStarted)
+        {
+            // Переход с другого уровня: меню не показываем, играем сразу.
+            State = GameState.Playing;
+            Time.timeScale = 1f;
+        }
+        else
+        {
+            State = GameState.Ready;
+            Time.timeScale = 0f;
+        }
     }
 
     private void Start()
@@ -41,6 +59,7 @@ public sealed class GameManager : MonoBehaviour
     public void StartGame()
     {
         if (Instance != this || restartRequested || State != GameState.Ready) return;
+        runStarted = true;
         SetState(GameState.Playing);
     }
 

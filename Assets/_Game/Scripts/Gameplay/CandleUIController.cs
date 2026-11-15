@@ -58,6 +58,7 @@ public sealed class CandleUIController : MonoBehaviour
                 // После победы — в начало игры (с первого уровня),
                 // независимо от того, на каком уровне победили.
                 Time.timeScale = 1f;
+                GameManager.ResetRun(); // возврат в начало игры — снова показать стартовое меню
                 UnityEngine.SceneManagement.SceneManager.LoadScene(firstLevelScene);
             });
         if (loseRestartButton != null)
