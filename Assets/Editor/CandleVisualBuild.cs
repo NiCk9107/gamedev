@@ -30,7 +30,7 @@ public static class CandleVisualBuild
         PlayerSettings.defaultScreenWidth=1600;PlayerSettings.defaultScreenHeight=900;PlayerSettings.fullScreenMode=FullScreenMode.Windowed;
         try
         {
-            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{"Assets/_Game/Scenes/Game.unity"},locationPathName=args[i+1],target=BuildTarget.StandaloneWindows64,options=BuildOptions.CompressWithLz4});
+            var result=BuildPipeline.BuildPlayer(new BuildPlayerOptions{scenes=new[]{"Assets/_Game/Scenes/Game.unity","Assets/_Game/Scenes/Trials.unity"},locationPathName=args[i+1],target=BuildTarget.StandaloneWindows64,options=BuildOptions.CompressWithLz4});
             if(result.summary.result!=BuildResult.Succeeded)throw new Exception("Build failed");
         }
         finally{PlayerSettings.productName=old;}
